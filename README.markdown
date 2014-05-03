@@ -7,5 +7,9 @@ This is a fork of the [Swiss Ephemeris][sweph].  There is no plan to carry on in
 - [ ] Add emscripten.mk, producing a JavaScript build that can be used in HTML5 applications.
 - [ ] Add Android.mk for use with the Android NDK and conforming to [best practices][vleu-authors].
 
+# License
+
+See [src/LICENSE](src/LICENSE).
+
 [sweph]: http://www.astro.com/swisseph/
 [vleu-authors]: http://ndkinfo.vleu.net/best-practices-authors
