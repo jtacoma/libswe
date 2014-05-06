@@ -26,7 +26,6 @@ CC?=cc	#for Linux
 SWEOBJ = swedate.o swehouse.o swejpl.o swemmoon.o swemplan.o swepcalc.o sweph.o\
 	swepdate.o swephlib.o swecl.o swehel.o
 SWESRC = $(addsuffix .c,$(basename $(SWEOBJ)))
-EMFLAGS = -s EXPORTED_FUNCTIONS="['_swe_set_ephe_path','_swe_julday','_swe_calc_ut','_swe_fixstar_ut','_swe_deltat','_swe_calc','_swe_fixstar','_swe_close','_swe_get_planet_name']"
 
 swetest: swetest.o libswe.a
 	$(CC) $(OP) -o swetest swetest.o -L. -lswe -lm
@@ -46,26 +45,30 @@ libswe.so: $(SWEOBJ)
 clean:
 	rm -f *.o swetest libswe*
 
+EMFLAGS = -O2 --closure 1
+EMFLAGS += --post-js libswe.post.js
+EMFLAGS += -s EXPORTED_FUNCTIONS=@`pwd`/em-exported-functions.js
+
 libswe.post.js: swephexp.h
 	echo "var Module;" > $@
 	echo "if (typeof Module === "undefined") Module = {};" > $@
 	grep '#.*define' $< | grep ' SE' \
 		| sed -e 's/#.*define */Module["_/' \
 		| sed -e 's/[ \t]\+/"] = /' \
-		| sed -e 's/\<[A-Z][A-Z0-9_]*\>/Module["&"]/g' \
+		| sed -e 's/\<[A-Z][A-Z0-9_]*\>/Module["_&"]/g' \
 		| sed -e 's:[ \t]*\(/\*.*\)\?$$:;:' \
 		>> $@
 
-libswe.html: libswe.post.js
-	$(CC) $(SWESRC) -o libswe.html \
-	--post-js libswe.post.js \
-	-s EXPORTED_FUNCTIONS=@`pwd`/EXPORTED_FUNCTIONS.js
+libswe.html: $(SWESRC) libswe.post.js
+	$(CC) $(SWESRC) -o $@ $(EMFLAGS)
 
-libswe.js: libswe.post.js
-	$(CC) $(SWESRC) -o libswe.js \
-	--post-js libswe.post.js \
-	-s EXPORTED_FUNCTIONS=@`pwd`/EXPORTED_FUNCTIONS.js
-	
+libswe.inner.js: $(SWESRC) libswe.post.js
+	$(CC) $(SWESRC) -o $@ $(EMFLAGS)
+	sleep 1
+
+libswe.js: libswe.inner.js em-wrapper.js
+	sed -e '/var Module;/{r libswe.inner.js' -e 'd}' em-wrapper.js > $@
+
 ###
 swecl.o: swejpl.h sweodef.h swephexp.h swedll.h sweph.h swephlib.h
 sweclips.o: sweodef.h swephexp.h swedll.h
