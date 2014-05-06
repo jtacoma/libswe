@@ -53,11 +53,14 @@
   for promoting such software, products or services.
 */
 var swe = (function() {
-	var exports = {};
+	var exports = {
+		'Module': Module
+	};
 	for (var propertyName in Module) {
-		if (propertyName.substring(0,3) === "_SE" || propertyName.substring(0,4) === "_SWE") {
+		if (propertyName.substring(0,3) === '_SE' || propertyName.substring(0,4) === '_SWE') {
 			exports[propertyName.substring(1)] = Module[propertyName];
 		}
 	}
 	return exports;
 })();
+delete Module;
