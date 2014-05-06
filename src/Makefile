@@ -25,7 +25,6 @@ CC?=cc	#for Linux
 
 SWEOBJ = swedate.o swehouse.o swejpl.o swemmoon.o swemplan.o swepcalc.o sweph.o\
 	swepdate.o swephlib.o swecl.o swehel.o
-SWESRC = $(addsuffix .c,$(basename $(SWEOBJ)))
 
 swetest: swetest.o libswe.a
 	$(CC) $(OP) -o swetest swetest.o -L. -lswe -lm

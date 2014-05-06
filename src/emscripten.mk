@@ -1,4 +1,8 @@
+all: libswe.js
+
 include Makefile
+
+SWESRC = $(addsuffix .c,$(basename $(SWEOBJ)))
 
 EMFLAGS = -O2 --closure 1
 EMFLAGS += --post-js libswe.post.js
@@ -22,4 +26,5 @@ libswe.inner.js: $(SWESRC) libswe.post.js
 	sleep 1
 
 libswe.js: libswe.inner.js em-wrapper.js
-	sed -e '/var Module;/{r libswe.inner.js' -e 'd}' em-wrapper.js > $@
+	closure-compiler < em-wrapper.js > libswe.wrapper.js
+	sed -e '/\*\//r libswe.inner.js' libswe.wrapper.js > $@
