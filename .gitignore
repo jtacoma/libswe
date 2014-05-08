@@ -4,7 +4,7 @@
 # Libraries
 *.lib
 *.a
-/src/libswe*
+/**/libswe*
 
 # Shared objects (inc. Windows DLLs)
 *.dll

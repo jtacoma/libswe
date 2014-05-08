@@ -1,14 +1,14 @@
 all: libswe.js
 
-include Makefile
+include ../Makefile
 
-SWESRC = $(addsuffix .c,$(basename $(SWEOBJ)))
+SWESRC = $(addprefix ../,$(addsuffix .c,$(basename $(SWEOBJ))))
 
 EMFLAGS = -O2 --closure 1
 EMFLAGS += --post-js libswe.post.js
 EMFLAGS += -s EXPORTED_FUNCTIONS=@`pwd`/em-exported-functions.js
 
-libswe.post.js: swephexp.h
+libswe.post.js: ../swephexp.h
 	echo "var Module;" > $@
 	echo "if (typeof Module === "undefined") Module = {};" > $@
 	grep '#.*define' $< | grep ' SE' \
