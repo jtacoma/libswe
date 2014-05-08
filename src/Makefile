@@ -43,7 +43,7 @@ libswe.so: $(SWEOBJ)
 
 clean:
 	rm -f *.o swetest libswe*
-	
+
 ###
 swecl.o: swejpl.h sweodef.h swephexp.h swedll.h sweph.h swephlib.h
 sweclips.o: sweodef.h swephexp.h swedll.h

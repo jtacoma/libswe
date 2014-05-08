@@ -1,0 +1,11 @@
+[
+	"_swe_set_ephe_path",
+	"_swe_julday",
+	"_swe_calc_ut",
+	"_swe_fixstar_ut",
+	"_swe_deltat",
+	"_swe_calc",
+	"_swe_fixstar",
+	"_swe_close",
+	"_swe_get_planet_name"
+]
