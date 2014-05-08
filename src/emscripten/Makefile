@@ -1,5 +1,8 @@
 all: libswe.js
 
+CC ?= emcc
+EMCC := $(CC)
+
 include ../Makefile
 
 SWESRC = $(addprefix ../,$(addsuffix .c,$(basename $(SWEOBJ))))
@@ -19,10 +22,10 @@ libswe.post.js: ../swephexp.h
 		>> $@
 
 libswe.html: $(SWESRC) libswe.post.js
-	$(CC) $(SWESRC) -o $@ $(EMFLAGS)
+	$(EMCC) $(SWESRC) -o $@ $(EMFLAGS)
 
 libswe.inner.js: $(SWESRC) libswe.post.js
-	$(CC) $(SWESRC) -o $@ $(EMFLAGS)
+	$(EMCC) $(SWESRC) -o $@ $(EMFLAGS)
 	sleep 1
 
 libswe.js: libswe.inner.js em-wrapper.js

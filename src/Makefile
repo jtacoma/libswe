@@ -15,7 +15,7 @@
 
 CFLAGS = -g -Wall -fPIC  	# for Linux and other gcc systems
 OP=$(CFLAGS)  
-CC?=cc	#for Linux
+CC=cc	#for Linux
 
 # compilation rule for general cases
 .o :
